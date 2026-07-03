@@ -1,8 +1,9 @@
-# Manipur 1700s
+# Manipuri Life
 
 Documentation hub for a **historically-accurate life-simulation game** set in the Meitei kingdom of
-18th-century Manipur — a *playable ethnography* in the spirit of *Stardew Valley*, where historical
-accuracy is a design constraint rather than set dressing.
+Manipur — a *playable ethnography* in the spirit of *Stardew Valley*, where historical
+accuracy is a design constraint rather than set dressing. The exact era is an open decision: we are
+choosing between five fifty-year windows spanning **1700–1950** (see *Choosing the Era* in the docs).
 
 The documentation is presented with **Slate**, a zero-build static docs viewer (the
 `docs-presentation` skill), reproduced here unchanged.

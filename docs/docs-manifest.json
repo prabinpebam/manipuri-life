@@ -4,7 +4,8 @@
     { "path": "landing.html", "title": "Overview", "order": 0, "icon": "home" },
     { "path": "why.html", "title": "What's the Proposal", "order": 1, "icon": "campaign", "badge": "the pitch" },
     { "path": "methodology.html", "title": "How We Work", "order": 2, "icon": "school", "badge": "start here" },
-    { "path": "backlog.html", "title": "Documentation Backlog", "order": 3, "icon": "checklist" },
+    { "path": "choosing-the-era.html", "title": "Choosing the Era", "order": 3, "icon": "hourglass_empty", "badge": "deciding" },
+    { "path": "backlog.html", "title": "Documentation Backlog", "order": 4, "icon": "checklist" },
 
     { "path": "00-foundation/README.html", "title": "00 · Project Foundation", "order": 10, "group": "Documentation Domains", "icon": "flag" },
     { "path": "10-historical-research/README.html", "title": "10 · Historical Research", "order": 20, "group": "Documentation Domains", "icon": "history_edu" },
