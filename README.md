@@ -10,7 +10,7 @@ The documentation is presented with **Slate**, a zero-build static docs viewer (
 ## Repository layout
 
 ```
-manipur-1700s/
+manipuri-life/
 ├─ index.html                 # root redirect → docs/ (for the bare GitHub Pages URL)
 ├─ .nojekyll                  # serve the site as raw static files (bypass Jekyll)
 ├─ _intake/                    # messy inbox: drop raw assets here (temporary)
@@ -60,7 +60,7 @@ because `docs/index.html` loads the viewer engine from `../docs-presentation-ski
 *above* the `docs/` folder. A root `index.html` redirect and a `.nojekyll` marker make the site work from
 the bare URL and serve as raw static files.
 
-> **Live at:** https://prabinpebam.github.io/manipur-1700s/ (redirects to `…/docs/`)
+> **Live at:** https://prabinpebam.github.io/manipuri-life/ (redirects to `…/docs/`)
 
 ## Viewing the docs locally
 
