@@ -171,6 +171,7 @@
           title: entry.title || extractTitle(content, entry.path),
           content, order: entry.order != null ? entry.order : idx,
           group: entry.group, icon: entry.icon, badge: entry.badge,
+          status: entry.status, updated: entry.updated,
           hidden: !!entry.hidden, type,
         });
       } catch (_) {}
@@ -475,7 +476,7 @@
       if (doc.type && doc.type !== 'page') continue;
       const parts = path.split('/'); let node = root;
       for (let i = 0; i < parts.length - 1; i++) { if (!node.children.has(parts[i])) node.children.set(parts[i], { name: parts[i], children: new Map(), files: [] }); node = node.children.get(parts[i]); }
-      node.files.push({ path, title: doc.title, filename: parts[parts.length - 1], order: doc.order != null ? doc.order : Infinity, icon: doc.icon, badge: doc.badge });
+      node.files.push({ path, title: doc.title, filename: parts[parts.length - 1], order: doc.order != null ? doc.order : Infinity, icon: doc.icon, badge: doc.badge, status: doc.status, updated: doc.updated });
     }
     state.fileTree = root;
     // Ordered navigable pages (for pager)
@@ -497,7 +498,10 @@
   function makeNavItem(file) {
     const a = document.createElement('a');
     a.className = 'nav-item'; a.href = '#' + file.path; a.dataset.path = file.path; a.title = file.title;
-    a.innerHTML = `<span class="material-symbols-outlined nav-icon" aria-hidden="true">${esc(file.icon || 'description')}</span><span class="nav-item-text">${esc(file.title)}</span>${file.badge ? `<span class="nav-badge">${esc(file.badge)}</span>` : ''}`;
+    const indicator = file.status
+      ? `<span class="nav-status" data-status="${esc(String(file.status).toLowerCase())}" title="${esc(navMetaTitle(file))}" aria-label="${esc(statusLabel(file.status))}"></span>`
+      : (file.badge ? `<span class="nav-badge">${esc(file.badge)}</span>` : '');
+    a.innerHTML = `<span class="material-symbols-outlined nav-icon" aria-hidden="true">${esc(file.icon || 'description')}</span><span class="nav-item-text">${esc(file.title)}</span>${indicator}`;
     a.addEventListener('click', (e) => { if (modClick(e)) return; e.preventDefault(); navigateTo(file.path); });
     return a;
   }
@@ -512,6 +516,53 @@
     group.appendChild(header); group.appendChild(content); return group;
   }
   function setAllFolders(expanded) { $$('.nav-folder').forEach(f => f.classList.toggle('expanded', expanded)); }
+
+  /* ==========================================================
+     STATUS + LAST-UPDATED METADATA
+     ========================================================== */
+  const STATUS_LABELS = { stub: 'Stub', planned: 'Planned', draft: 'Draft', wip: 'In progress', review: 'In review', pending: 'Pending', deciding: 'Deciding', stable: 'Stable', published: 'Published', done: 'Done' };
+  function statusLabel(s) { if (!s) return ''; const k = String(s).toLowerCase(); return STATUS_LABELS[k] || (String(s).charAt(0).toUpperCase() + String(s).slice(1)); }
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function absDate(d) { return d ? d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear() : ''; }
+  function relativeTime(iso) {
+    if (!iso) return '';
+    const then = new Date(iso); if (isNaN(then.getTime())) return '';
+    const secs = Math.floor((Date.now() - then.getTime()) / 1000);
+    if (secs < 0) return 'just now';
+    if (secs < 45) return 'just now';
+    const mins = Math.floor(secs / 60);
+    if (mins < 1) return 'just now';
+    if (mins === 1) return 'a minute ago';
+    if (mins < 60) return mins + ' minutes ago';
+    const hrs = Math.floor(mins / 60);
+    if (hrs === 1) return 'an hour ago';
+    if (hrs < 24) return hrs + ' hours ago';
+    const days = Math.floor(hrs / 24);
+    if (days === 1) return 'yesterday';
+    if (days < 7) return days + ' days ago';
+    if (days < 11) return 'a week ago';
+    if (days < 28) return Math.round(days / 7) + ' weeks ago';
+    const months = Math.round(days / 30);
+    if (days < 45) return 'a month ago';
+    if (days < 335) return months + ' months ago';
+    return absDate(then); // older than ~11 months -> absolute day month year
+  }
+  function navMetaTitle(file) {
+    const bits = [];
+    if (file.status) bits.push(statusLabel(file.status));
+    if (file.updated) { const rel = relativeTime(file.updated); if (rel) bits.push('updated ' + rel); }
+    return bits.join(' \u00b7 ');
+  }
+  function renderPageMeta(path, entry) {
+    const doc = state.docs.get(path) || entry || {};
+    const status = doc.status, updated = doc.updated;
+    if (!status && !updated) return '';
+    const parts = [];
+    if (status) parts.push(`<span class="slate-pagemeta__status" data-status="${esc(String(status).toLowerCase())}">${esc(statusLabel(status))}</span>`);
+    if (updated) { const rel = relativeTime(updated); if (rel) parts.push(`<span class="slate-pagemeta__updated" title="${esc(absDate(new Date(updated)))}">Updated ${esc(rel)}</span>`); }
+    if (!parts.length) return '';
+    return `<div class="slate-pagemeta">${parts.join('<span class="slate-pagemeta__sep" aria-hidden="true">\u00b7</span>')}</div>`;
+  }
 
   /* ==========================================================
      BREADCRUMBS + PAGER  (REQ-UX-20/21)
@@ -563,7 +614,7 @@
 
   function renderPage(path, entry) {
     const article = $('#document');
-    article.innerHTML = renderBreadcrumbs(path) + '<div class="page-body"></div>';
+    article.innerHTML = renderBreadcrumbs(path) + renderPageMeta(path, entry) + '<div class="page-body"></div>';
     const body = article.querySelector('.page-body');
     // Parse in an inert document (DOMParser docs do not load subresources) so
     // images are not fetched with their raw, pre-rewrite src; postProcess fixes

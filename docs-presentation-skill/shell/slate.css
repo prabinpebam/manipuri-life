@@ -321,6 +321,10 @@ button { font-family: inherit; font-size: inherit; border: none; background: non
 .nav-item.active .nav-icon { opacity: 1; }
 .nav-item-text { overflow: hidden; text-overflow: ellipsis; }
 .nav-badge { margin-left: auto; font-size: 9px; font-weight: var(--font-weight-semibold); text-transform: uppercase; letter-spacing: 0.4px; background: var(--color-brand-bg); color: #fff; padding: 1px 5px; border-radius: var(--radius-sm); flex-shrink: 0; }
+.nav-status { margin-left: auto; width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; background: var(--color-neutral-fg-4, var(--color-neutral-fg-3)); }
+.nav-status[data-status="draft"], .nav-status[data-status="wip"], .nav-status[data-status="pending"] { background: var(--color-status-warning-fg, #b26a00); }
+.nav-status[data-status="review"], .nav-status[data-status="deciding"] { background: var(--color-brand-fg, var(--color-brand-bg)); }
+.nav-status[data-status="stable"], .nav-status[data-status="published"], .nav-status[data-status="done"] { background: var(--color-status-success-fg, #2f7d32); }
 .nav-divider { height: 1px; background: var(--color-neutral-stroke-3); margin: var(--space-s) var(--space-l); }
 .nav-folder { margin: 0; }
 .nav-folder-header {
@@ -349,6 +353,13 @@ button { font-family: inherit; font-size: inherit; border: none; background: non
 .breadcrumbs { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); font-size: var(--font-size-200); color: var(--color-neutral-fg-3); margin-bottom: var(--space-l); }
 .breadcrumbs a { color: var(--color-neutral-fg-2); }
 .breadcrumbs .sep { opacity: 0.5; }
+.slate-pagemeta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s); margin: calc(-1 * var(--space-s)) 0 var(--space-l); font-size: var(--font-size-200); color: var(--color-neutral-fg-3); }
+.slate-pagemeta__status { display: inline-flex; align-items: center; gap: 6px; font-weight: var(--font-weight-semibold); color: var(--color-neutral-fg-2); }
+.slate-pagemeta__status::before { content: ''; width: 7px; height: 7px; border-radius: 999px; background: var(--color-neutral-fg-4, var(--color-neutral-fg-3)); }
+.slate-pagemeta__status[data-status="draft"]::before, .slate-pagemeta__status[data-status="wip"]::before, .slate-pagemeta__status[data-status="pending"]::before { background: var(--color-status-warning-fg, #b26a00); }
+.slate-pagemeta__status[data-status="review"]::before, .slate-pagemeta__status[data-status="deciding"]::before { background: var(--color-brand-fg, var(--color-brand-bg)); }
+.slate-pagemeta__status[data-status="stable"]::before, .slate-pagemeta__status[data-status="published"]::before, .slate-pagemeta__status[data-status="done"]::before { background: var(--color-status-success-fg, #2f7d32); }
+.slate-pagemeta__sep { opacity: 0.5; }
 
 /* - Prev/Next pager (REQ-UX-21) - */
 .pager { display: flex; gap: var(--space-m); margin-top: var(--space-xxxxl); padding-top: var(--space-xl); border-top: 1px solid var(--color-neutral-stroke-3); }
