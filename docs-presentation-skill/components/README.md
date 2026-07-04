@@ -26,6 +26,7 @@ pages from these components only; never invent CSS. Full contracts:
 | An image with a caption | Figure | [figure.html](figure.html) | via syntax |
 | Tabular data | Table | [table.html](table.html) | yes |
 | Code | Fenced code block (Markdown) | - | yes |
+| A section's iteration/change history | Version history pill + modal | [version-history.html](version-history.html) | HTML |
 
 ## v1.1 (deferred)
 

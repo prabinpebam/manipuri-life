@@ -269,6 +269,7 @@
       pre.appendChild(btn);
     });
     makeSectionsCollapsible(container);
+    processVersionHistory(container);
     enhanceGallery(container);
     if (window.hljs) container.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
   }
@@ -332,6 +333,80 @@
     imgs.forEach((img, i) => {
       img.classList.add('slate-zoomable');
       img.addEventListener('click', () => openViewer(imgs, i));
+    });
+  }
+
+  // ---- Version history (REQ-CM-14) ----
+  // A hidden .slate-history block authored at the bottom of a section renders as
+  // a "Version history" pill; clicking it opens a modal timeline. Iteration
+  // context is preserved without cluttering the document inline.
+  //   <div class="slate-history" data-history-title="Section name">
+  //     <div class="slate-history__entry" data-when="2026-07-04 10:40">
+  //       <p class="slate-history__summary">Short summary</p>
+  //       <p>Longer context…</p>
+  //     </div>
+  //   </div>
+  function formatHistoryWhen(raw) {
+    if (!raw) return '';
+    const d = new Date(String(raw).replace(' ', 'T'));
+    if (isNaN(d.getTime())) return raw;
+    return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+  function openHistoryModal(title, entries) {
+    const overlay = document.createElement('div');
+    overlay.className = 'slate-history-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    const dialog = document.createElement('div');
+    dialog.className = 'slate-history-dialog';
+    const head = document.createElement('div'); head.className = 'slate-history-dialog__head';
+    const h = document.createElement('p'); h.className = 'slate-history-dialog__title'; h.textContent = title || 'Version history';
+    const close = document.createElement('button'); close.type = 'button'; close.className = 'slate-history-dialog__close';
+    close.setAttribute('aria-label', 'Close version history');
+    close.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">close</span>';
+    head.appendChild(h); head.appendChild(close);
+    const body = document.createElement('div'); body.className = 'slate-history-dialog__body';
+    entries.forEach(e => {
+      const item = document.createElement('div'); item.className = 'slate-history-item';
+      const when = document.createElement('p'); when.className = 'slate-history-item__when'; when.textContent = formatHistoryWhen(e.when);
+      item.appendChild(when);
+      if (e.summary) { const s = document.createElement('p'); s.className = 'slate-history-item__summary'; s.textContent = e.summary; item.appendChild(s); }
+      if (e.body) { const b = document.createElement('div'); b.className = 'slate-history-item__body'; b.innerHTML = e.body; item.appendChild(b); }
+      body.appendChild(item);
+    });
+    dialog.appendChild(head); dialog.appendChild(body); overlay.appendChild(dialog);
+    function dismiss() {
+      overlay.remove();
+      document.documentElement.classList.remove('slate-history-open');
+      document.removeEventListener('keydown', onKey);
+    }
+    function onKey(ev) { if (ev.key === 'Escape') dismiss(); }
+    close.addEventListener('click', dismiss);
+    overlay.addEventListener('click', ev => { if (ev.target === overlay) dismiss(); });
+    document.addEventListener('keydown', onKey);
+    document.documentElement.classList.add('slate-history-open');
+    document.body.appendChild(overlay);
+    close.focus();
+  }
+  function processVersionHistory(container) {
+    container.querySelectorAll('.slate-history:not([data-history-ready])').forEach(block => {
+      block.setAttribute('data-history-ready', '1');
+      const title = block.getAttribute('data-history-title') || 'Version history';
+      const entries = [];
+      block.querySelectorAll('.slate-history__entry').forEach(el => {
+        const summaryEl = el.querySelector('.slate-history__summary');
+        const clone = el.cloneNode(true);
+        const sClone = clone.querySelector('.slate-history__summary'); if (sClone) sClone.remove();
+        entries.push({ when: el.getAttribute('data-when') || '', summary: summaryEl ? summaryEl.textContent.trim() : '', body: clone.innerHTML.trim() });
+      });
+      if (!entries.length) return;
+      entries.sort((a, b) => String(b.when).localeCompare(String(a.when)));
+      const pill = document.createElement('button');
+      pill.type = 'button'; pill.className = 'slate-history-pill';
+      pill.setAttribute('aria-label', title + ' - ' + entries.length + ' revision' + (entries.length === 1 ? '' : 's'));
+      pill.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">history</span><span>Version history</span><span class="slate-history-pill__count">' + entries.length + '</span>';
+      pill.addEventListener('click', () => openHistoryModal(title, entries));
+      block.parentNode.insertBefore(pill, block.nextSibling);
     });
   }
 
