@@ -53,7 +53,7 @@ The pitch and method are settled; the domain docs are being detailed out from th
 | Overview | `landing.html` | stable |
 | What's the Proposal (pitch) | `why.html` | stable |
 | How We Work (method) | `methodology.html` | stable |
-| 00 · Foundation | `README`, `canonical-year` | draft · era **decided: 1850-1900** |
+| 00 · Foundation | `README`, `vision-pillars`, `canonical-year` | draft · era **decided: 1850-1900** |
 | 10 · Historical Research | `README` | draft |
 | 15 · Benchmarking | `framework`, `stardew-valley`, `japanese-rural-life`, `cross-platform`, `lessons-for-us` | draft |
 | 20 · Game Design | `README` | stub |
