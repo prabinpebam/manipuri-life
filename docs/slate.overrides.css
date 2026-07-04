@@ -1,0 +1,24 @@
+/* ==========================================================
+   Manipuri Life - project overrides layered on top of Slate.
+   Loaded after slate.css in docs/index.html. Keep this small;
+   the Slate engine (docs-presentation-skill) stays untouched.
+   ========================================================== */
+
+/* Card icon - a large, faint brand-tinted watermark illustration that
+   matches a card's content. No frame, no background: it sits quietly
+   in the card's top-right corner, behind the text.
+   Markup:  <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">icon_name</span>
+   Placed as the first child of a .slate-card (or inside its <a> for interactive cards). */
+.slate-card { position: relative; overflow: hidden; }
+
+.slate-card__icon {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  font-size: 88px;
+  line-height: 1;
+  color: var(--color-brand-fg-1);
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
