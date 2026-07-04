@@ -1,0 +1,160 @@
+<header class="slate-hero">
+  <p class="slate-hero__eyebrow">Domain 50 · Technical Design</p>
+  <h1 class="slate-hero__title">POC Plan</h1>
+  <p class="slate-hero__summary">How we start building - keeping this repo clean for documentation, spinning up a
+     separate throwaway repo for proof-of-concepts, and running a sequence of tiny experiments that each answer
+     one question and feed a verdict back into the tracker.</p>
+</header>
+
+<aside class="slate-tldr">
+  <p class="slate-tldr__label">TL;DR</p>
+  <p>This repo stays <strong>documentation and tracking only</strong>. Code lives in a separate
+     <strong><code>manipuri-life-poc</code></strong> repo (one repo, a folder per experiment) so POCs stay
+     disposable and easy to compare. Before starting we need a short toolchain (<strong>Godot 4 .NET, .NET
+     SDK, Git + Git LFS, GitHub, VS Code, a pixel editor, CC0 placeholder assets, GUT</strong>) - almost all
+     free. Then we run <strong>small, timeboxed POCs</strong>, each answering <em>one</em> question (render,
+     input, tilemap, data pipeline, dialogue, save, console, agent-driving), ending in a written
+     <strong>keep / adapt / drop</strong> verdict that updates the <a href="../methodology.html">decision
+     tracker</a>. Winners later graduate into a real <code>manipuri-life-game</code> repo.</p>
+</aside>
+
+<div class="slate-callout slate-callout--info" role="note">
+  <p class="slate-callout__title">This documentation repo stays clean</p>
+  <p>The <code>manipuri-life</code> repo you're reading is the <strong>source of truth for decisions and
+     tracking</strong> - not a code repo. Experiments, prototypes, and engine projects live elsewhere so this
+     stays a stable, reviewable record. POC <em>results</em> flow back here as verdicts; POC <em>code</em> does
+     not.</p>
+</div>
+
+<h2>Repo strategy - where code goes</h2>
+<p>Two sane options for the POC code. For early, disposable experiments, one repo with a folder per POC is the
+   least overhead and makes cross-comparison easy.</p>
+<div class="slate-card-grid" data-cols="2">
+  <article class="slate-card">
+    <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">folder</span>
+    <h3 class="slate-card__title">A · One POC repo, folders per experiment <span class="slate-badge slate-badge--success">Recommended</span></h3>
+    <p class="slate-card__body"><code>manipuri-life-poc</code> with <code>poc-01-iso-render/</code>, <code>poc-02-input/</code>, etc., plus an index README. Low overhead, easy to browse side by side, one place for shared placeholder assets. Best while things are throwaway.</p>
+  </article>
+  <article class="slate-card">
+    <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">account_tree</span>
+    <h3 class="slate-card__title">B · One repo per POC</h3>
+    <p class="slate-card__body">Separate small repos (<code>poc-iso-render</code>, …). Cleaner isolation and independent history, but more repos to create and juggle. Worth it only if a POC grows into something real.</p>
+  </article>
+</div>
+<div class="slate-callout slate-callout--tip" role="note">
+  <p class="slate-callout__title">Proposed repos</p>
+  <p><strong><code>manipuri-life</code></strong> (this one) - docs &amp; tracking.
+     &nbsp;·&nbsp; <strong><code>manipuri-life-poc</code></strong> - all early experiments, disposable.
+     &nbsp;·&nbsp; <strong><code>manipuri-life-game</code></strong> - created <em>later</em>, once a vertical
+     slice proves the stack, seeded from the POC winners.</p>
+</div>
+
+<h2>What we need before the first POC</h2>
+<p>A short, mostly-free setup. This is the "what else do we need" checklist.</p>
+<table>
+  <thead><tr><th>Need</th><th>Purpose</th><th>Cost</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Godot 4 (.NET build)</strong></td><td>The engine; .NET build enables C# (our agent-friendly language choice)</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>.NET SDK</strong></td><td>Compiles C#; required for the Godot .NET build</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>Git + Git LFS</strong></td><td>Version control; LFS for binary art/audio</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>GitHub account/org</strong></td><td>Host the POC repo(s); Actions for CI later</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>VS Code</strong> + C#/Godot extensions</td><td>Editing C#, and the agent's home</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>Pixel editor</strong> (Aseprite or LibreSprite)</td><td>Any bespoke placeholder sprites</td><td><span class="slate-badge slate-badge--warning">~US$20</span> / <span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>CC0 placeholder assets</strong> (e.g. Kenney packs)</td><td>Stand-in tiles/sprites/audio so we prove feel before making art</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td><strong>GUT</strong> (Godot Unit Test addon)</td><td>Headless, verifiable test loops for the agent</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+    <tr><td>Agent client + <strong>Godot MCP</strong> (optional)</td><td>Let the agent drive the editor; validated in POC 0/7</td><td><span class="slate-badge slate-badge--success">Free</span></td></tr>
+  </tbody>
+</table>
+<div class="slate-callout slate-callout--warning" role="note">
+  <p class="slate-callout__title">Placeholder assets are not final art</p>
+  <p>Use CC0 packs and colored blocks to prove mechanics and feel - <strong>never</strong> ship them. Track any
+     third-party asset's licence and attribution in the POC's README. Our own
+     <a href="../40-art-audio/initial-explorations.html">art explorations</a> are reference, not drop-in
+     assets. Keeping placeholders obviously temporary avoids mistaking a prototype for the game.</p>
+</div>
+
+<h2>How each POC works - the rules</h2>
+<p>POCs are experiments, not products. A few rules keep them cheap and useful.</p>
+<ol class="slate-steps">
+  <li class="slate-step"><p class="slate-step__title">One question each</p><p>Every POC exists to answer a single question (e.g. "does the cozy iso look hold with a day/night cycle?"). If it answers two, split it.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Timeboxed &amp; throwaway</p><p>Small by design; the code is allowed to be ugly and disposable. We're buying <em>learning</em>, not shippable code.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Placeholder-first</p><p>Stand-in assets and stub data. No real art or content until a mechanic is proven worth it.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Ends in a verdict</p><p>Each POC's README records a <span class="slate-badge slate-badge--success">keep</span> / <span class="slate-badge slate-badge--info">adapt</span> / <span class="slate-badge">drop</span> verdict and a one-line lesson, which updates the <a href="../methodology.html">decision &amp; dependency tracker</a> back here.</p></li>
+</ol>
+
+<h2>The POC sequence</h2>
+<p>Ordered from "does the toolchain even work" outward. Each is independent enough to start where inspired,
+   but this order minimises rework. POC 0 comes first; the rest can parallelise.</p>
+<table>
+  <thead><tr><th>#</th><th>POC</th><th>Question it answers</th><th>Success looks like</th></tr></thead>
+  <tbody>
+    <tr><td><strong>0</strong></td><td>Environment &amp; "hello Godot"</td><td>Can we build/run/test from the CLI, and can an agent drive it?</td><td><code>godot --headless</code> runs a scene and a passing GUT test; committed with LFS.</td></tr>
+    <tr><td><strong>1</strong></td><td>Isometric render + day/night</td><td>Does the cozy pixel look hold, with Y-sort and a lighting cycle?</td><td>A small iso scene reads well at morning/noon/night with correct sorting.</td></tr>
+    <tr><td><strong>2</strong></td><td>Movement + input abstraction</td><td>Can one action-set drive keyboard, gamepad, and touch?</td><td>A placeholder character moves identically across all three inputs.</td></tr>
+    <tr><td><strong>3</strong></td><td>Tilemap + a tiny village</td><td>What's the level-building pipeline (LDtk / Tiled / Godot TileMap)?</td><td>A walkable village block with collision, authored quickly and re-importable.</td></tr>
+    <tr><td><strong>4</strong></td><td>Data pipeline slice</td><td>Can the fact database drive in-game content?</td><td>SQLite → validated JSON → NPCs/crops spawned from data, schema-checked.</td></tr>
+    <tr><td><strong>5</strong></td><td>Dialogue slice</td><td>Does the dialogue runtime fit relationship-led play?</td><td>One Yarn Spinner conversation with a branching choice, in-scene.</td></tr>
+    <tr><td><strong>6</strong></td><td>Save / load slice</td><td>Can we persist and migrate state cleanly?</td><td>Position + a relationship value survive quit/reload via versioned save.</td></tr>
+    <tr><td><strong>7</strong></td><td>Console feasibility &amp; MCP</td><td>Is the console path real, and can an agent drive the editor?</td><td>Confirmed current W4 terms; a Godot MCP server creates/edits a node reliably.</td></tr>
+  </tbody>
+</table>
+<div class="slate-callout slate-callout--tip" role="note">
+  <p class="slate-callout__title">Toward a vertical slice</p>
+  <p>Once the individual POCs pass, a small <strong>vertical slice</strong> stitches the winners together - walk
+     a data-driven village, talk to one neighbour, do one seasonal task, save and reload. That slice is the
+     trigger to spin up <code>manipuri-life-game</code> and (only then) engage console porting.</p>
+</div>
+
+<h2>How POC results feed the docs</h2>
+<p>The loop that keeps this repo the source of truth:</p>
+<dl class="slate-defs">
+  <dt>Per-POC README</dt>
+  <dd>Goal, the question, what was tried, the verdict (keep/adapt/drop), and one lesson. Lives in the POC repo.</dd>
+  <dt>Decision tracker update</dt>
+  <dd>Verdicts flip entries in <a href="../methodology.html">How We Work</a>'s decision &amp; dependency tracker
+     (e.g. engine, tilemap tool, dialogue runtime move from "open" to "decided").</dd>
+  <dt>Tech pages updated</dt>
+  <dd>Findings refine <a href="tech-stack.html">Tech Stack Research</a> and
+     <a href="agentic-development.html">Agentic Development</a> - proposals become decisions with evidence.</dd>
+</dl>
+
+<h2>First concrete step</h2>
+<ol class="slate-steps">
+  <li class="slate-step"><p class="slate-step__title">Create the POC repo</p><p>New <code>manipuri-life-poc</code> repo with a Godot <code>.gitignore</code>, Git LFS for binaries, and an index README.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Install the toolchain</p><p>Godot 4 (.NET), the .NET SDK, Git LFS, and the GUT addon.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Run POC 0</p><p>A one-scene project that runs headless and passes a GUT test - proving the build/test loop and, optionally, an agent driving it.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Record the verdict</p><p>Write the POC 0 README and update the decision tracker here.</p></li>
+</ol>
+<div class="slate-callout slate-callout--info" role="note">
+  <p class="slate-callout__title">Want this scaffolded?</p>
+  <p>When you're ready, this can be bootstrapped for you: the <code>manipuri-life-poc</code> repo structure, a
+     Godot <code>.gitignore</code> and LFS config, a POC index README, and a POC 0 skeleton with a GUT test -
+     so you start from a running loop rather than a blank folder.</p>
+</div>
+
+<h2>Related</h2>
+<div class="slate-card-grid" data-cols="3">
+  <article class="slate-card slate-card--interactive">
+    <a href="tech-stack.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">memory</span>
+      <h3 class="slate-card__title">Tech Stack Research</h3>
+      <p class="slate-card__body">The Godot-first stack these POCs put to the test.</p>
+    </a>
+  </article>
+  <article class="slate-card slate-card--interactive">
+    <a href="agentic-development.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">smart_toy</span>
+      <h3 class="slate-card__title">Agentic Development</h3>
+      <p class="slate-card__body">How agents drive the POCs, with humans in the loop.</p>
+    </a>
+  </article>
+  <article class="slate-card slate-card--interactive">
+    <a href="../methodology.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">school</span>
+      <h3 class="slate-card__title">How We Work</h3>
+      <p class="slate-card__body">The decision &amp; dependency tracker each verdict updates.</p>
+    </a>
+  </article>
+</div>
+
+<p><a href="README.html">← Back to Technical Design</a></p>

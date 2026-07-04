@@ -28,6 +28,7 @@
     { "path": "50-technical/cross-platform-strategy.html", "title": "Cross-Platform Strategy", "order": 61, "group": "Documentation Domains", "icon": "devices", "status": "stub", "updated": "2026-07-02" },
     { "path": "50-technical/tech-stack.html", "title": "Tech Stack Research", "order": 62, "group": "Documentation Domains", "icon": "memory", "status": "draft", "updated": "2026-07-04" },
     { "path": "50-technical/agentic-development.html", "title": "Agentic Development", "order": 63, "group": "Documentation Domains", "icon": "smart_toy", "status": "draft", "updated": "2026-07-04" },
+    { "path": "50-technical/poc-plan.html", "title": "POC Plan", "order": 64, "group": "Documentation Domains", "icon": "science", "status": "draft", "updated": "2026-07-04" },
     { "path": "60-production/README.html", "title": "60 · Production & Roadmap", "order": 70, "group": "Documentation Domains", "icon": "timeline", "status": "stub", "updated": "2026-07-02" },
     { "path": "70-cultural-integrity/README.html", "title": "70 · Cultural Integrity", "order": 80, "group": "Documentation Domains", "icon": "diversity_3", "status": "stub", "updated": "2026-07-02" }
   ]
