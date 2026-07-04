@@ -22,3 +22,9 @@
   pointer-events: none;
   user-select: none;
 }
+
+/* A card title sits at the very top of its card, so it must not inherit the
+   heading type-ramp's large top margin (that margin exists to separate
+   document sections, not to pad the top of a card). Collapsing it removes the
+   weird empty gap above the card's content. */
+.slate-card .slate-card__title { margin-top: 0; }
