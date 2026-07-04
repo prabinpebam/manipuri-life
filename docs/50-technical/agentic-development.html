@@ -1,0 +1,189 @@
+<header class="slate-hero">
+  <p class="slate-hero__eyebrow">Domain 50 · Technical Design</p>
+  <h1 class="slate-hero__title">Agentic Development Approach</h1>
+  <p class="slate-hero__summary">How we use AI agents to narrow the skill gap - covering the technical know-how a
+     small passion team lacks - while humans stay firmly in the loop on design, feel, and truth.</p>
+</header>
+
+<aside class="slate-tldr">
+  <p class="slate-tldr__label">TL;DR</p>
+  <p>We adopt <strong>agent-first, human-in-the-loop</strong> development: agents handle the engineering we
+     don't have deep expertise in (engine code, pipelines, tooling, tests), and humans own what agents can't -
+     <strong>game feel, art direction, design judgment, and historical truth</strong>. This only works if the
+     project is built to be <strong>agent-friendly</strong>: text-first, typed, tested, and well-documented.
+     <strong>Godot fits unusually well</strong> - text scenes, a real CLI with <code>--headless</code>, GUT
+     tests for verifiable loops, and community <strong>MCP servers</strong> that let an agent drive the
+     editor. Guardrails (automated tests, the fact schema, and advisory review) keep agent speed from
+     becoming throwaway work or inaccurate content.</p>
+</aside>
+
+<div class="slate-callout slate-callout--info" role="note">
+  <p class="slate-callout__title">Why this page exists</p>
+  <p>Becoming a full-stack game developer - engine, graphics, audio, tools, pipelines, ports - is a lot for a
+     small team. The intent here is explicit: <strong>use agentic automation to close that skill gap</strong>,
+     not to replace the humans. The agent goes where our technical know-how runs out; people stay in control
+     of the decisions that make the game <em>good</em> and <em>true</em>.</p>
+</div>
+
+<h2>The stance: agent-first, human-in-the-loop</h2>
+<p>"Purely agentic for everything" is the wrong goal. The right one is a clear division of labour, played to
+   each side's strengths.</p>
+<div class="slate-compare">
+  <div class="slate-compare__col">
+    <p class="slate-compare__head"><span class="slate-badge slate-badge--success">Agents own (with review)</span></p>
+    <ul>
+      <li>Engine/gameplay code we lack expertise in (GDScript/C#, node wiring, shaders)</li>
+      <li>The fact-to-content pipeline, tooling, and glue</li>
+      <li>Boilerplate, refactors, tests, CI, exports</li>
+      <li>First-draft content generation (gated by schema + review)</li>
+      <li>Explaining and teaching the tech as we go - the skill-gap bridge</li>
+    </ul>
+  </div>
+  <div class="slate-compare__col">
+    <p class="slate-compare__head"><span class="slate-badge slate-badge--danger">Humans own</span></p>
+    <ul>
+      <li><strong>Game feel</strong> - pacing, juice, "cozy" - judged by playing</li>
+      <li><strong>Art direction</strong> and the overall look</li>
+      <li>Design decisions, scope, and priority calls</li>
+      <li><strong>Historical truth</strong> and cultural sensitivity</li>
+      <li>Final review and sign-off on everything shipped</li>
+    </ul>
+  </div>
+</div>
+
+<h2>What agents are good and bad at</h2>
+<p>Being honest about the edges is what keeps the approach safe.</p>
+<div class="slate-card-grid" data-cols="2">
+  <article class="slate-card">
+    <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">thumb_up</span>
+    <h3 class="slate-card__title">Strong</h3>
+    <p class="slate-card__body">Text-representable, verifiable work: code, data transforms, tooling, tests, refactors, boilerplate, and content <em>at scale</em> - a natural fit for a data-driven historical game.</p>
+  </article>
+  <article class="slate-card">
+    <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">thumb_down</span>
+    <h3 class="slate-card__title">Weak</h3>
+    <p class="slate-card__body">Subjective feel, art direction, long-horizon architecture judgment, and anything requiring <em>playing</em> the game. And they <strong>hallucinate</strong> - fatal for a game whose value is accuracy unless gated.</p>
+  </article>
+</div>
+
+<h2>Agent-friendliness is an architecture lever</h2>
+<p>Agent effectiveness isn't fixed - it scales with how we build. The more the project looks like the four
+   things below, the more the agent can do reliably and the less we have to babysit.</p>
+<dl class="slate-defs">
+  <dt>Text-first</dt>
+  <dd>Scenes, resources, and content as readable text the agent can generate, diff, and review - not opaque
+     binary blobs or GUI-only state.</dd>
+  <dt>Typed</dt>
+  <dd>Statically-typed code (C#, TypeScript) gives the agent a compiler as a safety net and a tighter feedback
+     loop than dynamically-typed languages.</dd>
+  <dt>Tested</dt>
+  <dd>Automated tests turn "looks right" into a <strong>verifiable pass/fail</strong> the agent can iterate
+     against on its own - the single biggest reliability multiplier.</dd>
+  <dt>Documented</dt>
+  <dd>A large public corpus and clear in-repo docs (like this site) give the agent grounded context instead of
+     guesswork.</dd>
+</dl>
+<div class="slate-callout slate-callout--tip" role="note">
+  <p class="slate-callout__title">The nudge this creates</p>
+  <p>Prefer <strong>C# over GDScript</strong>, keep everything text-first and test-covered, and treat the docs
+     as agent context. Choosing the stack for the product comes first - but among good options, the more
+     agent-friendly one wins ties.</p>
+</div>
+
+<h2>Why Godot fits the agentic workflow</h2>
+<p>The engine we already lean toward (see <a href="tech-stack.html">Tech Stack Research</a>) happens to be one
+   of the most agent-drivable. Its toolchain gives an agent everything it needs to build, run, and
+   <em>check</em> its own work without a human operating the editor.</p>
+<table>
+  <thead><tr><th>Capability</th><th>Tool / mechanism</th><th>What it unlocks for agents</th></tr></thead>
+  <tbody>
+    <tr><td>Text project format</td><td><code>.tscn</code> / <code>.tres</code> scenes &amp; resources</td><td>Generate and diff scenes as text - no editor required.</td></tr>
+    <tr><td>Command line</td><td>Godot CLI (official)</td><td>Run projects, one-off scripts, and exports from the terminal.</td></tr>
+    <tr><td>Headless mode</td><td><code>godot --headless</code></td><td>CI builds and tests with no window/GPU - agent-runnable anywhere.</td></tr>
+    <tr><td>Unit tests</td><td><strong>GUT</strong> (Godot Unit Test)</td><td>Verifiable pass/fail loops the agent iterates against.</td></tr>
+    <tr><td>Editor control</td><td><strong>MCP servers</strong> (community)</td><td>Create nodes, edit scenes, manage assets, capture editor errors.</td></tr>
+    <tr><td>Language</td><td>C# (or GDScript)</td><td>Typed, testable code the agent can reason about safely.</td></tr>
+    <tr><td>Open source</td><td>Full engine source</td><td>Agent can ground answers in real code, not guesses.</td></tr>
+  </tbody>
+</table>
+<div class="slate-callout slate-callout--warning" role="note">
+  <p class="slate-callout__title">On the MCP servers - treat as an unproven dependency</p>
+  <p>Godot MCP servers exist and are active (a <em>Godot-MCP</em> entry sits in the official Asset Library, plus
+     several GitHub projects supporting Claude, Copilot, Cursor, and Gemini), but they are
+     <strong>community-maintained, not first-party</strong>. Like the console-porting dependency, validate
+     maturity in a POC, pin versions, and never let the workflow hinge on a single one surviving. Even without
+     MCP, the CLI + headless + GUT path already enables most agent work.</p>
+</div>
+
+<h2>Human-in-the-loop guardrails</h2>
+<p>Agents produce a lot, fast. Without guardrails that speed becomes debt or, worse, confident inaccuracy.
+   Four gates keep it honest.</p>
+<ol class="slate-steps">
+  <li class="slate-step"><p class="slate-step__title">Tests before trust</p><p>Agent work lands behind automated tests (GUT, pipeline validation). If it isn't verifiable, it isn't done.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Schema-gated content</p><p>Generated content must conform to the <a href="../10-historical-research/README.html">fact schema</a> and its confidence model - no free-floating "facts."</p></li>
+  <li class="slate-step"><p class="slate-step__title">Accuracy &amp; sensitivity review</p><p>Anything historical passes the <a href="../70-cultural-integrity/README.html">cultural-integrity</a> practice and the 98/2 rule. Agent output is a <em>draft</em>, never a source of truth.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Human sign-off on feel</p><p>A person plays it and decides if it's good. Taste is not delegated.</p></li>
+</ol>
+<div class="slate-callout slate-callout--danger" role="note">
+  <p class="slate-callout__title">The one hard rule</p>
+  <p>For a game whose soul is authenticity, <strong>never treat agent-generated history as fact</strong>. It is
+     always a starting draft to be verified against real sources and the advisory circle. Convenience must not
+     become fabrication.</p>
+</div>
+
+<h2>How this fits How We Work</h2>
+<p>This slots cleanly into the <a href="../methodology.html">agile approach</a>: agents make the parallel
+   tracks move faster, and the decision/dependency tracker keeps them from racing ahead of settled choices.
+   Because agents amplify output, the agile principle of <strong>reducing throwaway work</strong> matters more,
+   not less - which is exactly what the guardrails above enforce.</p>
+
+<h2>First POC - does this actually work?</h2>
+<p>Rather than assume, we test the workflow itself as an early, low-cost experiment.</p>
+<ol class="slate-steps">
+  <li class="slate-step"><p class="slate-step__title">Agent-drives-Godot slice</p><p>Point an agent at a small <strong>Godot + C#</strong> project and have it build one isometric scene, headless, with GUT tests - measuring how far it gets unaided.</p></li>
+  <li class="slate-step"><p class="slate-step__title">MCP trial</p><p>Wire one community <strong>Godot MCP server</strong> to the agent and evaluate editor-driving reliability and maintenance risk.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Pipeline slice</p><p>Have the agent build the SQLite → validated JSON → in-engine content path end to end, gated by the fact schema.</p></li>
+  <li class="slate-step"><p class="slate-step__title">Judge the loop</p><p>Assess: how much did the agent close the skill gap, how tight was the feedback loop, and where did humans have to step in?</p></li>
+</ol>
+
+<h2>Risks &amp; caveats</h2>
+<ul>
+  <li><strong>Hallucination</strong> - especially for historical content; mitigated by schema + advisory review.</li>
+  <li><strong>Over-reliance</strong> - the team should still understand the system enough to review it; agents assist judgment, not replace it.</li>
+  <li><strong>Immature tooling</strong> - community MCP servers may lag Godot releases; keep the CLI/headless path as the dependable baseline.</li>
+  <li><strong>Feel can't be automated</strong> - budget human time for the play-and-tune work no agent can do.</li>
+</ul>
+
+<h2>Related</h2>
+<div class="slate-card-grid" data-cols="3">
+  <article class="slate-card slate-card--interactive">
+    <a href="tech-stack.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">memory</span>
+      <h3 class="slate-card__title">Tech Stack Research</h3>
+      <p class="slate-card__body">The engine and tooling choices this approach rides on - Godot-first.</p>
+    </a>
+  </article>
+  <article class="slate-card slate-card--interactive">
+    <a href="../methodology.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">school</span>
+      <h3 class="slate-card__title">How We Work</h3>
+      <p class="slate-card__body">The agile, parallel-track method agents accelerate.</p>
+    </a>
+  </article>
+  <article class="slate-card slate-card--interactive">
+    <a href="../70-cultural-integrity/README.html">
+      <span class="slate-card__icon material-symbols-outlined" aria-hidden="true">diversity_3</span>
+      <h3 class="slate-card__title">Cultural Integrity</h3>
+      <p class="slate-card__body">The review that agent-generated content must pass to be trusted.</p>
+    </a>
+  </article>
+</div>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><strong>Godot command line</strong> - <a href="https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html" target="_blank" rel="noopener">Command line tutorial</a> (headless mode, running scripts, exporting).</li>
+  <li><strong>GUT (Godot Unit Test)</strong> - <a href="https://gut.readthedocs.io/" target="_blank" rel="noopener">gut.readthedocs.io</a> (command-line test running).</li>
+  <li><strong>Godot MCP</strong> - <a href="https://godotengine.org/asset-library/asset/5245" target="_blank" rel="noopener">Godot-MCP in the Asset Library</a>, plus community servers such as <a href="https://github.com/Coding-Solo/godot-mcp" target="_blank" rel="noopener">Coding-Solo/godot-mcp</a> and <a href="https://github.com/mkdevkit/godot-mcp" target="_blank" rel="noopener">mkdevkit/godot-mcp</a>.</li>
+</ul>
+
+<p><a href="tech-stack.html">← Back to Tech Stack Research</a></p>
