@@ -1,0 +1,103 @@
+<header class="slate-hero">
+  <p class="slate-hero__eyebrow">Domain 00 · Foundation</p>
+  <h1 class="slate-hero__title">Scope &amp; Non-Goals</h1>
+  <p class="slate-hero__summary">What is in v1, what is explicitly out, and where the 2% convenience budget
+     applies - but first and foremost, the <strong>framework we use to decide</strong> any of it.</p>
+</header>
+
+<aside class="slate-tldr">
+  <p class="slate-tldr__label">TL;DR</p>
+  <p>Scope stays honest with one rule: every candidate feature must <strong>serve a pillar</strong> and earn
+     its place in the <strong>vertical slice</strong>, or it is cut or deferred. This page holds the
+     <strong>decision framework</strong> - a pillar + MoSCoW rubric and the 98/2 budget - plus a draft in/out
+     list to react to. Nothing is locked; the framework matters more than today's list.</p>
+</aside>
+
+<div class="slate-callout slate-callout--warning" role="note">
+  <p class="slate-callout__title"><span class="slate-badge slate-badge--warning">Draft for review</span> The framework is the point</p>
+  <p>The specific in/out list below will change many times. What should stabilise first is <em>how</em> we
+     decide - so that every future "should this be in the game?" has a repeatable answer instead of a debate.</p>
+</div>
+
+<h2>The decision framework</h2>
+<p>Every proposed feature, system, or piece of content runs this gauntlet. If it survives, it has a place;
+   where it lands (now, later, never) falls out of the scoring.</p>
+<ol class="slate-steps">
+  <li class="slate-step"><p class="slate-step__title">1 · Which pillar does it serve?</p><p>Name the <a href="vision-pillars.html">pillar</a> it advances - a great game first, authenticity is the soul, progress you can see, calm is a feature, understanding by living, or specific not generic. <strong>If you can't name one, it's out.</strong></p></li>
+  <li class="slate-step"><p class="slate-step__title">2 · Vertical-slice test</p><p>Is it needed to prove the core loop in the <em>first playable slice</em>? If yes, it's a candidate for v1 core. If no, it defers - however good it is.</p></li>
+  <li class="slate-step"><p class="slate-step__title">3 · MoSCoW placement</p><p>Sort it into <strong>Must / Should / Could / Won't (v1)</strong>. "Must" is reserved for things the game is broken without.</p></li>
+  <li class="slate-step"><p class="slate-step__title">4 · The 98/2 gate</p><p>If it bends history, it spends from the <strong>2% playability budget</strong> - and the deviation must be written down, never silent (see <a href="../methodology.html">How We Work</a>).</p></li>
+  <li class="slate-step"><p class="slate-step__title">5 · Cost vs payoff</p><p>Weigh effort and risk against player value. Prefer high-payoff, low-risk; be suspicious of high-effort features that serve only one pillar weakly.</p></li>
+</ol>
+<div class="slate-callout slate-callout--info" role="note">
+  <p class="slate-callout__title">The test that keeps scope honest</p>
+  <p>A feature earns its place only if you can finish this sentence: <em>"We are building this because it
+     serves &lt;pillar&gt;, and the vertical slice needs it because &lt;reason&gt;."</em> If the sentence
+     stalls, the feature waits or dies. Scope creep is almost always a feature that can't finish that sentence.</p>
+</div>
+
+<h2>Draft MoSCoW - a starting position</h2>
+<p>A first pass, to be argued with. Placement is provisional; the framework above is what moves items between
+   columns.</p>
+<table>
+  <thead><tr><th>Candidate</th><th>MoSCoW (v1)</th><th>Pillar served</th></tr></thead>
+  <tbody>
+    <tr><td>Core loop: day/season calendar, movement, interaction</td><td><span class="slate-badge slate-badge--danger">Must</span></td><td>A great game first</td></tr>
+    <tr><td>Relationships &amp; a living village of NPCs</td><td><span class="slate-badge slate-badge--danger">Must</span></td><td>Progress you can see</td></tr>
+    <tr><td>Quests / goals with cultural payoff</td><td><span class="slate-badge slate-badge--danger">Must</span></td><td>Understanding by living</td></tr>
+    <tr><td>A few authentic activities (rice, cooking, one festival)</td><td><span class="slate-badge slate-badge--danger">Must</span></td><td>Authenticity is the soul</td></tr>
+    <tr><td>Save / progression; no-fail cozy framing</td><td><span class="slate-badge slate-badge--danger">Must</span></td><td>Calm is a feature</td></tr>
+    <tr><td>Fishing / foraging; weaving; the market</td><td><span class="slate-badge slate-badge--warning">Should</span></td><td>Progress · authenticity</td></tr>
+    <tr><td>Collections / almanac (the "learn by playing" surface)</td><td><span class="slate-badge slate-badge--warning">Should</span></td><td>Understanding by living</td></tr>
+    <tr><td>Romance; deeper economy; more festivals; mini-games</td><td><span class="slate-badge slate-badge--info">Could</span></td><td>various</td></tr>
+    <tr><td>Combat-centric systems, multiplayer, procedural worlds, 3D, modding</td><td><span class="slate-badge">Won't (v1)</span></td><td>- (fights the pillars)</td></tr>
+  </tbody>
+</table>
+
+<h2>Non-goals - what we refuse to build</h2>
+<p>Saying no clearly is how the yes stays meaningful. These are out on purpose, and why.</p>
+<div class="slate-card-grid" data-cols="2">
+  <article class="slate-card"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">swords</span><h3 class="slate-card__title">A combat / action game</h3><p class="slate-card__body">Twitch challenge and violence fight "calm is a feature." Any conflict is gentle, optional narrative weather - never a stress mechanic.</p></article>
+  <article class="slate-card"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">groups</span><h3 class="slate-card__title">Multiplayer / live-service</h3><p class="slate-card__body">Single-player, offline-first. No servers, no retention treadmills - they add cost and pull against a calm, private experience.</p></article>
+  <article class="slate-card"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">casino</span><h3 class="slate-card__title">A procedural / generic sandbox</h3><p class="slate-card__body">A hand-authored, specific Manipur - not a random village generator. "Specific, never generic" rules this out.</p></article>
+  <article class="slate-card"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">auto_fix_high</span><h3 class="slate-card__title">Fantasy with magic as real</h3><p class="slate-card__body">Folklore and belief appear exactly as people believed them; no proven magic or monsters. The 98/2 rule forbids it.</p></article>
+</div>
+
+<h2>The 2% convenience budget</h2>
+<p>Scope has a small, deliberate escape hatch. <strong>98% historical reality, 2% gameplay convenience</strong> -
+   spent on purpose, documented, and never used to smuggle in inaccuracy for its own sake.</p>
+<div class="slate-compare">
+  <div class="slate-compare__col">
+    <p class="slate-compare__head"><span class="slate-badge slate-badge--success">Fair use of the 2%</span></p>
+    <ul>
+      <li>Gentle time compression so a day is a satisfying session</li>
+      <li>Quality-of-life UI that never contradicts the record</li>
+      <li>Small readability liberties (legible signage, forgiving hitboxes)</li>
+    </ul>
+  </div>
+  <div class="slate-compare__col">
+    <p class="slate-compare__head"><span class="slate-badge slate-badge--danger">Not what it's for</span></p>
+    <ul>
+      <li>Anachronistic crops, tools, or customs "because they're fun"</li>
+      <li>Invented festivals or borrowed traditions</li>
+      <li>Silent deviations - every spend is written down</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Open questions before we lock scope</h2>
+<ul>
+  <li><strong>Romance in v1?</strong> A "Could" today - does relationship depth need it to land, or is friendship enough?</li>
+  <li><strong>One village or several?</strong> Map size trades authenticity depth against production cost.</li>
+  <li><strong>How much economy?</strong> Enough to feel a livelihood, without becoming an optimisation treadmill.</li>
+  <li><strong>What is the minimum vertical slice?</strong> The smallest thing that proves the whole game is worth building.</li>
+</ul>
+
+<h2>Related</h2>
+<div class="slate-card-grid" data-cols="3">
+  <article class="slate-card slate-card--interactive"><a href="vision-pillars.html"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">explore</span><h3 class="slate-card__title">Vision &amp; Pillars</h3><p class="slate-card__body">The pillars every scope decision is scored against.</p></a></article>
+  <article class="slate-card slate-card--interactive"><a href="../20-game-design/README.html"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">stadia_controller</span><h3 class="slate-card__title">Game Design</h3><p class="slate-card__body">Where in-scope systems get specified.</p></a></article>
+  <article class="slate-card slate-card--interactive"><a href="../methodology.html"><span class="slate-card__icon material-symbols-outlined" aria-hidden="true">school</span><h3 class="slate-card__title">How We Work</h3><p class="slate-card__body">The 98/2 rule and the decision &amp; dependency tracker.</p></a></article>
+</div>
+
+<p><a href="README.html">← Back to Project Foundation</a></p>
