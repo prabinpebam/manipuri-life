@@ -28,3 +28,11 @@
    document sections, not to pad the top of a card). Collapsing it removes the
    weird empty gap above the card's content. */
 .slate-card .slate-card__title { margin-top: 0; }
+
+/* The runtime auto-adds a permalink "#" (.heading-anchor) to every heading,
+   including card titles. Card titles are component labels, not linkable
+   document sections, so the anchor is inappropriate here. Worse, inside an
+   interactive card the anchor is caught by `.slate-card--interactive a`
+   { display: block }, so it takes a full invisible line and makes interactive
+   cards taller than plain ones - non-uniform card spacing. Hide it. */
+.slate-card__title .heading-anchor { display: none; }
